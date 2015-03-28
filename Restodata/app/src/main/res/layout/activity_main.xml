@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:text="predict"
         android:id="@+id/btn_predict"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/btn_listen"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 

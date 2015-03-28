@@ -11,6 +11,8 @@ import com.restodata.webapp.model.ApiResponse;
 import com.restodata.webapp.model.MenuItem;
 import com.restodata.webapp.model.PredictResult;
 
+import org.w3c.dom.Text;
+
 import java.util.Calendar;
 
 public class PredictActivity extends Activity{
@@ -49,10 +51,11 @@ public class PredictActivity extends Activity{
         tr.setLayoutParams(new TableRow.LayoutParams(
                 TableRow.LayoutParams.MATCH_PARENT,
                 TableRow.LayoutParams.WRAP_CONTENT));
-
-        tr.addView(new TextView(this));
+        TextView tv = new TextView(this);
+        tv.setText("Saat");
+        tr.addView(tv);
         for (MenuItem i: res.menuItems.values()) {
-            TextView tv = new TextView(this);
+            tv = new TextView(this);
             tv.setText(i.name);
             tr.addView(tv);
         }
@@ -62,8 +65,13 @@ public class PredictActivity extends Activity{
             tr.setLayoutParams(new TableRow.LayoutParams(
                     TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT));
+
+            tv = new TextView(this);
+            tv.setText(""+hour);
+            tr.addView(tv);
+
             for (MenuItem it: res.menuItems.values()) {
-                TextView tv = new TextView(this);
+                tv = new TextView(this);
                 tv.setText(""+res.results.get(it.id).get(hour));
                 tr.addView(tv);
             }

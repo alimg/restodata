@@ -24,9 +24,9 @@ public class ListenActivity extends Activity{
         @Override
         public void onSuccess(ApiResponse response) {
             if (response.status.equals("success")) {
-                textOut.append("regiteder order: " + response.matchedItem.name);
+                textOut.append("registered order: " + response.matchedItem.name+"\n");
             } else {
-                textOut.append("no match for that");
+                textOut.append("no match for that\n");
             }
         }
 
@@ -43,7 +43,7 @@ public class ListenActivity extends Activity{
 
         @Override
         public void onBeginningOfSpeech() {
-            Log.d(TAG, "being");
+            Log.d(TAG, "begin");
         }
 
         @Override
@@ -65,7 +65,9 @@ public class ListenActivity extends Activity{
         public void onError(int error) {
             Log.d(TAG, "error:" +error);
             if (error==SpeechRecognizer.ERROR_NO_MATCH ||
-                    error==SpeechRecognizer.ERROR_SPEECH_TIMEOUT) {
+                    error==SpeechRecognizer.ERROR_SPEECH_TIMEOUT ||
+                    error==SpeechRecognizer.ERROR_NETWORK ||
+                    error==SpeechRecognizer.ERROR_NETWORK_TIMEOUT ) {
                 recognizer.setRecognitionListener(mRecognitionListener);
                 recognizer.startListening(recognizerIntent);
             }
