@@ -6,7 +6,12 @@ import com.restodata.webapp.model.ApiResponse;
 import com.restodata.webapp.service.MenuService;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.ServerRunner;
@@ -22,8 +27,21 @@ public class Main extends NanoHTTPD{
         Method method = session.getMethod();
         String uri = session.getUri();
         System.out.println(method + " '" + uri + "' ");
+        Map<String, String> headers = session.getHeaders();
 
-        ApiRequest req = gson.fromJson(new BufferedReader(new InputStreamReader(session.getInputStream())), ApiRequest.class);
+        int contentLength = Integer.parseInt(headers.get("content-length"));
+        byte[] body = new byte[0];
+        try {
+            DataInputStream dataInputStream = new DataInputStream(session.getInputStream());
+            body = new byte[contentLength];
+            dataInputStream.readFully(body, 0, contentLength);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String text = new String(body);
+        System.out.println("req: "+text);
+        ApiRequest req = gson.fromJson(text, ApiRequest.class);
         ApiResponse response = null;
         if (req.action.equals("getMenu")) {
             response = MenuService.getMenu();

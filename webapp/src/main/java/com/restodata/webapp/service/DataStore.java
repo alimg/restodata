@@ -14,8 +14,13 @@ public class DataStore {
     private List<OrderFeature> mFeatures;
     private String mFile;
 
-    public DataStore(String file) throws FileNotFoundException {
-        loadFile(file);
+    public DataStore(String file){
+        try {
+            loadFile(file);
+        } catch (FileNotFoundException e) {
+            //e.printStackTrace();
+            mFeatures = new ArrayList<OrderFeature>();
+        }
     }
 
     private void loadFile(String file) throws FileNotFoundException {
@@ -35,6 +40,7 @@ public class DataStore {
                         Integer.parseInt(ar[5]),
                         Integer.parseInt(ar[6])));
             }
+            reader.close();
         } catch (IOException e) {
         }
         mFeatures = features;
@@ -53,8 +59,6 @@ public class DataStore {
             if (!found) {
                 mFeatures.add(f);
             }
-
-            saveFile();
         }
     }
 
@@ -66,6 +70,7 @@ public class DataStore {
                 writer.write(f.toCsv());
                 writer.write("\n");
             }
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -77,5 +82,11 @@ public class DataStore {
 
     public List<OrderFeature> getFeatures() {
         return mFeatures;
+    }
+
+    public void commit() {
+        synchronized (this) {
+            saveFile();
+        }
     }
 }

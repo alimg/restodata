@@ -24,6 +24,10 @@ public class OrderFeature {
         this.count = count;
     }
 
+    public OrderFeature(OrderFeature f) {
+        this(f.itemId, f.year, f.month, f.dayOfMonth, f.dayOfWeek, f.hour, f.count);
+    }
+
     public boolean matches(OrderFeature o) {
         return itemId == o.itemId && year == o.year &&
                 month == o.month && dayOfMonth == o.dayOfMonth &&
@@ -43,11 +47,11 @@ public class OrderFeature {
     }
 
     public Feature[] toFeatures() {
-        return new Feature[]{ new FeatureNode(0, itemId),
-                new FeatureNode(1, year),
-                new FeatureNode(2, month),
-                new FeatureNode(3, dayOfMonth),
-                new FeatureNode(4, dayOfWeek),
-                new FeatureNode(5, hour)};
+        return new Feature[]{ new FeatureNode(1, itemId),
+                new FeatureNode(2, year),
+                new FeatureNode(3, month),
+                new FeatureNode(4, dayOfMonth),
+                new FeatureNode(5, dayOfWeek),
+                new FeatureNode(6, hour)};
     }
 }

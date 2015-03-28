@@ -1,9 +1,9 @@
 package com.restodata.webapp.model;
 
 public class ApiResponse {
-    private PredictResult predictResult;
-    private MenuItem matchedItem;
-    private MenuResponse menu;
+    public PredictResult predictResult;
+    public MenuItem matchedItem;
+    public MenuResponse menu;
     public String status;
 
     public ApiResponse(String status, MenuResponse menu) {

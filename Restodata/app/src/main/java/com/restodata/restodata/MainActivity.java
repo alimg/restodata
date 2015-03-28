@@ -14,10 +14,16 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_listen).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, ListenActivity.class));
+            }
+        });
+        findViewById(R.id.btn_predict).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, PredictActivity.class));
             }
         });
     }

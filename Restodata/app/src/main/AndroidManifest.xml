@@ -22,6 +22,9 @@
         <activity android:name=".ListenActivity"
             android:label="@string/title_activity_main">
         </activity>
+        <activity android:name=".PredictActivity"
+            android:label="@string/title_activity_main">
+        </activity>
     </application>
 
 </manifest>

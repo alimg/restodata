@@ -12,6 +12,12 @@ public class PredictRequest {
         cal.set(year, month, dayOfMonth);
         return cal.get(Calendar.DAY_OF_WEEK);
     }
+
+    public PredictRequest(int year, int month, int dayOfMonth) {
+        this.year = year;
+        this.month = month;
+        this.dayOfMonth = dayOfMonth;
+    }
 }
 
 

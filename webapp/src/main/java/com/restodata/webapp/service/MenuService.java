@@ -6,9 +6,11 @@ import com.restodata.webapp.model.MenuResponse;
 import com.restodata.webapp.model.OrderRequest;
 import com.restodata.webapp.model.PredictRequest;
 import com.restodata.webapp.model.PredictResult;
+import com.restodata.webapp.model.machine.OrderFeature;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.awt.Menu;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +39,7 @@ public class MenuService {
             MenuItem item = matchKeywords(order.keywords, exampleMenuItems);
             response = new ApiResponse("success", item);
 
-            LearningService.addOrder(exampleRestId, item, order.date);
+            LearningService.addOrder(exampleRestId, item, order.date, exampleMenuItems);
         } catch (ItemNotMatchedException e) {
             e.printStackTrace();
             response = new ApiResponse("fail");
@@ -51,8 +53,9 @@ public class MenuService {
         double maxPoint=0.1;
         for (String val: keywords) {
             for(MenuItem item: items) {
-                double point = StringUtils.getJaroWinklerDistance(item.name, val);
-                if (maxPoint>point) {
+                double point = StringUtils.getJaroWinklerDistance(item.name.toLowerCase(), val.toLowerCase());
+                //System.out.println(item.name+" :"+val+"  "+point);
+                if (maxPoint<point) {
                     maxPoint = point;
                     bestMatch = item;
                 }

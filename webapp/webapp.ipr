@@ -83,7 +83,7 @@
       <module fileurl="file://$PROJECT_DIR$/webapp.iml" filepath="$PROJECT_DIR$/webapp.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK" />
   <component name="ThriftCompiler">
     <compilers />
   </component>

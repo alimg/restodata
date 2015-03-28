@@ -29,21 +29,24 @@ public class LearningService {
     private static DataStore store;
 
     private static void init() {
-        try {
-            store = new DataStore("data.csv");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        store = new DataStore("data.csv");
     }
 
-    public static void addOrder(int restId, MenuItem item, String dateStr) {
+    public static void addOrder(int restId, MenuItem item, String dateStr, List<MenuItem> others) {
         try {
             Calendar date = Calendar.getInstance();
             date.setTime(sdf.parse(dateStr));
 
             OrderFeature f = new OrderFeature(item.id, date.get(Calendar.YEAR), date.get(Calendar.MONTH),
-                    date.get(Calendar.DAY_OF_MONTH), date.get(Calendar.DAY_OF_WEEK),  date.get(Calendar.HOUR), 1);
+                    date.get(Calendar.DAY_OF_MONTH), date.get(Calendar.DAY_OF_WEEK),  date.get(Calendar.HOUR_OF_DAY), 1);
             store.addOrder(f);
+            /*for (MenuItem i: others) {
+                OrderFeature newF = new OrderFeature(f);
+                newF.count = 0;
+                newF.itemId = i.id;
+                store.addOrder(newF);
+            }*/
+            store.commit();
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -68,7 +71,7 @@ public class LearningService {
         }
         problem.bias = -1;
         problem.n = OrderFeature.FEATURE_COUNT;
-        problem.l = 1;
+        problem.l = features.size();
 
         problem.x = features.toArray(new Feature[features.size()][]);
         problem.y = new double[targets.size()];
@@ -96,7 +99,9 @@ public class LearningService {
         for (MenuItem item : items) {
             int hour;
             for (hour = 0; hour < 24; hour++) {
-                Feature[] predictFeatures = new OrderFeature(item.id, predict.year, predict.month, predict.dayOfMonth, predict.getDayOfWeek(), hour, 0).toFeatures();
+                OrderFeature ftr = new OrderFeature(item.id, predict.year, predict.month, predict.dayOfMonth, predict.getDayOfWeek(), hour, 0);
+                Feature[] predictFeatures = ftr.toFeatures();
+                System.out.println("predicting: "+ftr.toCsv());
                 double count = Linear.predictProbability(model, predictFeatures, dv);
                 result.add(item, hour, count);
             }

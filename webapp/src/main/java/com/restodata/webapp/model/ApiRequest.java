@@ -5,4 +5,14 @@ public class ApiRequest {
 
     public OrderRequest order;
     public PredictRequest predict;
+
+    public ApiRequest(OrderRequest order) {
+        action = "addOrder";
+        this.order = order;
+    }
+
+    public ApiRequest(PredictRequest predict) {
+        action = "getPredictions";
+        this.predict = predict;
+    }
 }

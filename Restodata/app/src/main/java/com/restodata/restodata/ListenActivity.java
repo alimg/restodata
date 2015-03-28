@@ -9,6 +9,9 @@ import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.restodata.restodata.api.WebApiClient;
+import com.restodata.webapp.model.ApiResponse;
+
 import java.util.ArrayList;
 
 
@@ -17,6 +20,21 @@ public class ListenActivity extends Activity{
     private static final String TAG = "ListenActivity";
     private TextView textOut;
     private SpeechRecognizer recognizer;
+    private WebApiClient.WebApiCallback mOrderRequestCallback = new WebApiClient.WebApiCallback() {
+        @Override
+        public void onSuccess(ApiResponse response) {
+            if (response.status.equals("success")) {
+                textOut.append("regiteder order: " + response.matchedItem.name);
+            } else {
+                textOut.append("no match for that");
+            }
+        }
+
+        @Override
+        public void onError(String error) {
+
+        }
+    };
     private RecognitionListener mRecognitionListener = new RecognitionListener() {
         @Override
         public void onReadyForSpeech(Bundle params) {
@@ -60,6 +78,7 @@ public class ListenActivity extends Activity{
             for (String s: list) {
                 b.append(s).append("#");
             }
+            WebApiClient.sendOrderRequest(list, mOrderRequestCallback);
             textOut.append("results: "+b.toString()+"\n");
             recognizer.setRecognitionListener(mRecognitionListener);
             recognizer.startListening(recognizerIntent);
