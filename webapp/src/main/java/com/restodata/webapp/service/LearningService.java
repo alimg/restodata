@@ -101,7 +101,7 @@ public class LearningService {
             for (hour = 0; hour < 24; hour++) {
                 OrderFeature ftr = new OrderFeature(item.id, predict.year, predict.month, predict.dayOfMonth, predict.getDayOfWeek(), hour, 0);
                 Feature[] predictFeatures = ftr.toFeatures();
-                System.out.println("predicting: "+ftr.toCsv());
+                //System.out.println("predicting: "+ftr.toCsv());
                 double count = Linear.predictProbability(model, predictFeatures, dv);
                 result.add(item, hour, count);
             }

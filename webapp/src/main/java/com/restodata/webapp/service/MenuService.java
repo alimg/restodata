@@ -50,11 +50,11 @@ public class MenuService {
 
     private static MenuItem matchKeywords(List<String> keywords, List<MenuItem> items) throws ItemNotMatchedException {
         MenuItem bestMatch = null;
-        double maxPoint=0.1;
+        double maxPoint=0.6;
         for (String val: keywords) {
             for(MenuItem item: items) {
                 double point = StringUtils.getJaroWinklerDistance(item.name.toLowerCase(), val.toLowerCase());
-                //System.out.println(item.name+" :"+val+"  "+point);
+                System.out.println(item.name+" :"+val+"  "+point);
                 if (maxPoint<point) {
                     maxPoint = point;
                     bestMatch = item;
