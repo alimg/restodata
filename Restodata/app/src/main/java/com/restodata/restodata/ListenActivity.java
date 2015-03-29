@@ -1,5 +1,6 @@
 package com.restodata.restodata;
 
+import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,10 +8,16 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.restodata.restodata.api.WebApiClient;
 import com.restodata.webapp.model.ApiResponse;
+import com.restodata.webapp.model.MenuItem;
+import com.restodata.webapp.model.PredictRequest;
 
 import java.util.ArrayList;
 
@@ -18,15 +25,16 @@ import java.util.ArrayList;
 public class ListenActivity extends Activity{
 
     private static final String TAG = "ListenActivity";
-    private TextView textOut;
+
     private SpeechRecognizer recognizer;
     private WebApiClient.WebApiCallback mOrderRequestCallback = new WebApiClient.WebApiCallback() {
         @Override
         public void onSuccess(ApiResponse response) {
             if (response.status.equals("success")) {
-                textOut.append("registered order: " + response.matchedItem.name+"\n");
+                registeredOrder(response.matchedItem);
+                Log.d(TAG, "registered order: " + response.matchedItem.name+"\n");
             } else {
-                textOut.append("no match for that\n");
+                Log.d(TAG, "no match for that\n");
             }
         }
 
@@ -35,10 +43,13 @@ public class ListenActivity extends Activity{
 
         }
     };
+
+
     private RecognitionListener mRecognitionListener = new RecognitionListener() {
         @Override
         public void onReadyForSpeech(Bundle params) {
             Log.d(TAG, "ready: "+params);
+            setListening(true);
         }
 
         @Override
@@ -70,6 +81,7 @@ public class ListenActivity extends Activity{
                     error==SpeechRecognizer.ERROR_NETWORK_TIMEOUT ) {
                 recognizer.setRecognitionListener(mRecognitionListener);
                 recognizer.startListening(recognizerIntent);
+                setListening(false);
             }
         }
 
@@ -83,12 +95,13 @@ public class ListenActivity extends Activity{
                 }
                 WebApiClient.sendOrderRequest(list, mOrderRequestCallback);
 
-                textOut.append("results: " + b.toString() + "\n");
+                Log.d(TAG, "results: " + b.toString());
             } else {
-                textOut.append("results: null\n");
+                Log.d(TAG, "results: null");
             }
             recognizer.setRecognitionListener(mRecognitionListener);
             recognizer.startListening(recognizerIntent);
+            setListening(false);
         }
 
         @Override
@@ -98,20 +111,61 @@ public class ListenActivity extends Activity{
 
         @Override
         public void onEvent(int eventType, Bundle params) {
-            textOut.append("event: " + params.toString() + "\n");
+            Log.d(TAG, "event: " + params.toString() + "\n");
         }
     };
+
     private Intent recognizerIntent;
+    private LinearLayout layoutOrders;
+    private ScrollView scrollView;
+    private View listeningView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listen);
 
-        textOut = (TextView) findViewById(R.id.text_out);
+        scrollView = (ScrollView) findViewById(R.id.scrollView);
+        //scrollView.fullScroll(View.FOCUS_DOWN);
+        layoutOrders = (LinearLayout) findViewById(R.id.layout_orders);
         recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getClass().getPackage().getName());
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "tr");
+
+        listeningView = getLayoutInflater().inflate(R.layout.order_item, null);
+        ((TextView)listeningView).setText("...");
+        //final LayoutTransition transitioner = new LayoutTransition();
+        //layoutOrders.setLayoutTransition(transitioner);
+    }
+
+    private void setListening(boolean enabled) {
+        if (enabled) {
+            try {
+                if (listeningView.getParent() == null)
+                    layoutOrders.addView(listeningView);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            scrollToBottom();
+        } else {
+            layoutOrders.removeView(listeningView);
+        }
+    }
+
+    private void registeredOrder(MenuItem matchedItem) {
+        TextView tv = (TextView) LayoutInflater.from(this).inflate(R.layout.order_item, null);
+        tv.setText(matchedItem.name);
+        layoutOrders.addView(tv);
+        scrollToBottom();
+    }
+
+    private void scrollToBottom() {
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.scrollTo(0, scrollView.getBottom());
+            }
+        });
     }
 
     @Override
