@@ -104,7 +104,7 @@ public class LearningService {
                 double count = Linear.predictProbability(model, predictFeatures, dv);
                 double weightedCount = 0;
                 for (int j=0; j<dv.length; j++) {
-                    weightedCount+=dv[j]*Math.pow(model.getLabels()[j],2);
+                    weightedCount+=Math.pow(dv[j],2)*model.getLabels()[j];
                 }
                 weightedCount = Math.sqrt(weightedCount);
                 //System.out.println("predicting: "+ftr.toCsv()+" "+Arrays.toString(dv));
