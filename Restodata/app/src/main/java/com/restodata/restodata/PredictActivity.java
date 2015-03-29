@@ -107,7 +107,7 @@ public class PredictActivity extends Activity{
 
         List<Integer> colors = new ArrayList<>();
         for (MenuItem it: res.menuItems.values()) {
-            colors.add(ChartUtils.nextColor());
+            colors.add(ColorList.next());
         }
         List<Column> columns = new ArrayList<Column>();
         for (int hour=0; hour<24; hour++) {
