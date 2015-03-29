@@ -1,40 +1,65 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="fill_parent"
+    android:layout_height="match_parent"
     tools:context="com.restodata.restodata.MainActivity"
     android:weightSum="1">
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="495dp"
-        android:text="listen"
-        android:id="@+id/btn_listen"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:weightSum="1">
-
-        <Button
-            android:layout_width="178dp"
-            android:layout_height="wrap_content"
-            android:text="predict"
-            android:id="@+id/btn_predict"
-            android:layout_below="@+id/btn_listen"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <Button
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/big_button_1"
+            android:text="LISTEN"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:id="@+id/btn_listen">
+
+        </Button>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@drawable/big_button_3"
+            android:text="PREDICT"
+            android:id="@+id/btn_predict"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:layout_weight="1" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/big_button_2"
             android:text="MENU"
-            android:id="@+id/button" />
+            android:id="@+id/button_menu"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="5"
+            android:layout_weight="1" />
     </LinearLayout>
 
 </LinearLayout>

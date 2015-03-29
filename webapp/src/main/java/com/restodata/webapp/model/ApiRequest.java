@@ -15,4 +15,8 @@ public class ApiRequest {
         action = "getPredictions";
         this.predict = predict;
     }
+
+    public ApiRequest(GetMenuRequest menu) {
+        action = "getMenu";
+    }
 }

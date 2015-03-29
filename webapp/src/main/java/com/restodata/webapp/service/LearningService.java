@@ -3,9 +3,8 @@ package com.restodata.webapp.service;
 import com.restodata.webapp.model.MenuItem;
 import com.restodata.webapp.model.PredictRequest;
 import com.restodata.webapp.model.PredictResult;
-import com.restodata.webapp.model.machine.OrderFeature;
+import com.restodata.webapp.model.ml.OrderFeature;
 
-import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

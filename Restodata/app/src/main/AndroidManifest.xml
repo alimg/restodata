@@ -25,6 +25,9 @@
         <activity android:name=".PredictActivity"
             android:label="@string/title_activity_main">
         </activity>
+        <activity android:name=".EditActivity"
+            android:label="@string/title_activity_main">
+        </activity>
     </application>
 
 </manifest>

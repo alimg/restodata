@@ -26,6 +26,12 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(new Intent(MainActivity.this, PredictActivity.class));
             }
         });
+        findViewById(R.id.button_menu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, EditActivity.class));
+            }
+        });
     }
 
 

@@ -8,7 +8,7 @@
     android:shadowDx="0"
     android:shadowDy="0"
     android:shadowRadius="5"
-    android:textColor="#111"
+    android:textColor="#ddd"
     android:textSize="30sp"
     android:padding="20sp"
     android:layout_margin="20dp">

@@ -1,6 +1,6 @@
 package com.restodata.webapp.service;
 
-import com.restodata.webapp.model.machine.OrderFeature;
+import com.restodata.webapp.model.ml.OrderFeature;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

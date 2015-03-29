@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.restodata.webapp.model.ApiRequest;
 import com.restodata.webapp.model.ApiResponse;
+import com.restodata.webapp.model.GetMenuRequest;
 import com.restodata.webapp.model.OrderRequest;
 import com.restodata.webapp.model.PredictRequest;
 import com.restodata.webapp.service.LearningService;
@@ -50,6 +51,20 @@ public class WebApiClient {
             Gson gson = new Gson();
             Calendar cal = Calendar.getInstance();
             ApiRequest apiReq = new ApiRequest(new PredictRequest(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH)));
+            req.setEntity(new StringEntity(gson.toJson(apiReq), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        connect(req, callback);
+    }
+
+    public static void getMenu(WebApiCallback callback) {
+        HttpPost req = new HttpPost(WEB_API_URL);
+
+        try {
+            Gson gson = new Gson();
+            Calendar cal = Calendar.getInstance();
+            ApiRequest apiReq = new ApiRequest(new GetMenuRequest());
             req.setEntity(new StringEntity(gson.toJson(apiReq), "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

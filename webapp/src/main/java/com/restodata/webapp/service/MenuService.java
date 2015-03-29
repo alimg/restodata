@@ -6,11 +6,9 @@ import com.restodata.webapp.model.MenuResponse;
 import com.restodata.webapp.model.OrderRequest;
 import com.restodata.webapp.model.PredictRequest;
 import com.restodata.webapp.model.PredictResult;
-import com.restodata.webapp.model.machine.OrderFeature;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.awt.Menu;
 import java.util.ArrayList;
 import java.util.List;
 

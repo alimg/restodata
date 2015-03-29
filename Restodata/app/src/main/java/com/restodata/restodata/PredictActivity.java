@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -46,6 +47,8 @@ public class PredictActivity extends Activity{
     private TableLayout tableLayout;
     private SwitchCompat modeSwitch;
     private ColumnChartView barChart;
+    private View barChartContainer;
+    private ViewGroup legendContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,17 +58,19 @@ public class PredictActivity extends Activity{
         tableLayout = (TableLayout) findViewById(R.id.tabela);
         modeSwitch = (SwitchCompat) findViewById(R.id.switch1);
         barChart = (ColumnChartView) findViewById(R.id.chart);
+        barChartContainer = findViewById(R.id.chart_container);
+        legendContainer = (ViewGroup) findViewById(R.id.legend_container);
         modeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     modeSwitch.setText("Graph");
                     tableLayout.setVisibility(View.GONE);
-                    barChart.setVisibility(View.VISIBLE);
+                    barChartContainer.setVisibility(View.VISIBLE);
                 } else {
                     modeSwitch.setText("Table");
                     tableLayout.setVisibility(View.VISIBLE);
-                    barChart.setVisibility(View.GONE);
+                    barChartContainer.setVisibility(View.GONE);
                 }
             }
         });
@@ -132,5 +137,14 @@ public class PredictActivity extends Activity{
         data.setAxisXBottom(axisX);
         data.setAxisYLeft(axisY);
         barChart.setColumnChartData(data);
+
+        legendContainer.removeAllViews();
+        int j=0;
+        for (MenuItem it: res.menuItems.values()) {
+            ViewGroup row = (ViewGroup) inflater.inflate(R.layout.legend_row, null);
+            row.findViewById(R.id.colorview).setBackgroundColor(colors.get(j++));
+            ((TextView)row.findViewById(R.id.textView)).setText(it.name);
+            legendContainer.addView(row);
+        }
     }
 }

@@ -28,13 +28,37 @@
             android:checked="false" />
     </LinearLayout>
 
-    <lecho.lib.hellocharts.view.ColumnChartView
-        android:id="@+id/chart"
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:padding="20dp">
-    </lecho.lib.hellocharts.view.ColumnChartView>
+        android:id="@+id/chart_container">
+
+        <lecho.lib.hellocharts.view.ColumnChartView
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:padding="20dp">
+        </lecho.lib.hellocharts.view.ColumnChartView>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView2" >
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/legend_container">
+
+            </LinearLayout>
+        </ScrollView>
+
+
+    </LinearLayout>
 
     <HorizontalScrollView
         android:layout_width="match_parent"

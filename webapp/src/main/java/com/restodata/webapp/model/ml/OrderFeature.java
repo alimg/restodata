@@ -1,4 +1,4 @@
-package com.restodata.webapp.model.machine;
+package com.restodata.webapp.model.ml;
 
 import de.bwaldvogel.liblinear.Feature;
 import de.bwaldvogel.liblinear.FeatureNode;
