@@ -79,16 +79,16 @@ public class LearningService {
                 OrderFeature ftr = new OrderFeature(item.id, predict.year, predict.month, predict.dayOfMonth, predict.getDayOfWeek(), hour, 0);
                 Feature[] predictFeatures = ftr.toFeatures();
                 double count = Linear.predictProbability(model, predictFeatures, dv);
-                /*double weightedCount = 0;
+                double weightedCount = 0;
                 double dvSum = 0;
                 for (int j=0; j<dv.length; j++) {
-                    dv[j] = Math.sqrt(dv[j]);
+                    dv[j] = Math.pow(dv[j], 2);
                     weightedCount+=dv[j]*model.getLabels()[j];
-                    dvSum += dv[j];
+                    dvSum+=dv[j];
                 }
-                weightedCount /= dvSum;*/
+                weightedCount /= dvSum;
                 //System.out.println("predicting: "+ftr.toCsv()+" "+Arrays.toString(dv));
-                result.add(item, hour, count);
+                result.add(item, hour, weightedCount);
             }
         }
         return result;
