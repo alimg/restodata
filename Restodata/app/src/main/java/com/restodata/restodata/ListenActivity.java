@@ -76,12 +76,17 @@ public class ListenActivity extends Activity{
         @Override
         public void onResults(Bundle results) {
             ArrayList<String> list = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-            StringBuilder b = new StringBuilder();
-            for (String s: list) {
-                b.append(s).append("#");
+            if (list != null) {
+                StringBuilder b = new StringBuilder();
+                for (String s : list) {
+                    b.append(s).append("#");
+                }
+                WebApiClient.sendOrderRequest(list, mOrderRequestCallback);
+
+                textOut.append("results: " + b.toString() + "\n");
+            } else {
+                textOut.append("results: null\n");
             }
-            WebApiClient.sendOrderRequest(list, mOrderRequestCallback);
-            textOut.append("results: "+b.toString()+"\n");
             recognizer.setRecognitionListener(mRecognitionListener);
             recognizer.startListening(recognizerIntent);
         }
