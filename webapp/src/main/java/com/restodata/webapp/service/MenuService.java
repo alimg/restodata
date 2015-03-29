@@ -26,6 +26,8 @@ public class MenuService {
         exampleMenuItems.add(new MenuItem(1, "Yemek", "Bazlama Ayvalik", 5));
         exampleMenuItems.add(new MenuItem(2, "Tatli", "Cheesecake", 7));
         exampleMenuItems.add(new MenuItem(3, "Icecek", "Ayran", 2.5f));
+        exampleMenuItems.add(new MenuItem(4, "Icecek", "Kola", 2.5f));
+        exampleMenuItems.add(new MenuItem(5, "Yemek", "Karisik Tost", 7.5f));
     }
 
     public static ApiResponse getMenu() {
