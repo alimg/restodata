@@ -27,6 +27,8 @@ public class LearningService {
     }
 
     private static DataStore store;
+    private static Model mModel;
+    private static boolean isDataInvalidated;
 
     private static void init() {
         store = new DataStore("data.csv");
@@ -47,6 +49,7 @@ public class LearningService {
                 store.addOrder(newF);
             }*/
             store.commit();
+            isDataInvalidated = true;
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -55,6 +58,43 @@ public class LearningService {
 
     public static PredictResult predict(int restId, PredictRequest predict) {
         //train
+        if (mModel == null || isDataInvalidated) {
+            mModel = trainData(restId, predict);
+            isDataInvalidated = false;
+        }
+        Model model = mModel;
+
+        double[] dv = new double[mModel.getNrClass()];
+        System.out.println("labels: " + Arrays.toString(model.getLabels()));
+
+        // --------------------------------------------
+        // predict
+        // --------------------------------------------
+        List<MenuItem> items = MenuService.getMenuItems(restId);
+        PredictResult result = new PredictResult(predict);
+
+        for (MenuItem item : items) {
+            int hour;
+            for (hour = 0; hour < 24; hour++) {
+                OrderFeature ftr = new OrderFeature(item.id, predict.year, predict.month, predict.dayOfMonth, predict.getDayOfWeek(), hour, 0);
+                Feature[] predictFeatures = ftr.toFeatures();
+                double count = Linear.predictProbability(model, predictFeatures, dv);
+                /*double weightedCount = 0;
+                double dvSum = 0;
+                for (int j=0; j<dv.length; j++) {
+                    dv[j] = Math.sqrt(dv[j]);
+                    weightedCount+=dv[j]*model.getLabels()[j];
+                    dvSum += dv[j];
+                }
+                weightedCount /= dvSum;*/
+                //System.out.println("predicting: "+ftr.toCsv()+" "+Arrays.toString(dv));
+                result.add(item, hour, count);
+            }
+        }
+        return result;
+    }
+
+    private static Model trainData(int restId, PredictRequest predict) {
         Problem problem = new Problem();
         Model model;
         List<Feature[]> features;
@@ -87,33 +127,6 @@ public class LearningService {
         Parameter parameter = new Parameter(solver, C, eps);
         System.out.println("l:"+problem.l+" n:"+problem.n);
         model = Linear.train(problem, parameter);
-        double[] dv = new double[model.getNrClass()];
-        System.out.println("labels: " + Arrays.toString(model.getLabels()));
-
-        // --------------------------------------------
-        // predict
-        // --------------------------------------------
-        List<MenuItem> items = MenuService.getMenuItems(restId);
-        PredictResult result = new PredictResult(predict);
-
-        for (MenuItem item : items) {
-            int hour;
-            for (hour = 0; hour < 24; hour++) {
-                OrderFeature ftr = new OrderFeature(item.id, predict.year, predict.month, predict.dayOfMonth, predict.getDayOfWeek(), hour, 0);
-                Feature[] predictFeatures = ftr.toFeatures();
-                double count = Linear.predictProbability(model, predictFeatures, dv);
-                /*double weightedCount = 0;
-                double dvSum = 0;
-                for (int j=0; j<dv.length; j++) {
-                    dv[j] = Math.sqrt(dv[j]);
-                    weightedCount+=dv[j]*model.getLabels()[j];
-                    dvSum += dv[j];
-                }
-                weightedCount /= dvSum;*/
-                //System.out.println("predicting: "+ftr.toCsv()+" "+Arrays.toString(dv));
-                result.add(item, hour, count);
-            }
-        }
-        return result;
+        return model;
     }
 }
